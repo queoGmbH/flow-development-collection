@@ -307,8 +307,9 @@ class Debugger
             if (!$plaintext) {
                 $dump = '<a href="#o' . $objectIdentifier . '" onclick="document.location.hash=\'#o' . $objectIdentifier . '\'; return false;" class="debug-seeabove" title="see above">' . $dump . '</a>';
             }
-        } else {
-            $dump .= self::getObjectSnippetPlaintext($object);
+// TODO: Disable until https://github.com/neos/flow-development-collection/pull/3233 is merged
+//        } else {
+//            $dump .= self::getObjectSnippetPlaintext($object);
         }
 
         return $dump;
@@ -338,7 +339,9 @@ class Debugger
                     $arguments .= (strlen($arguments) === 0) ? '' : '<span class="color-muted">,</span> ';
                     $arguments .= '<span class="color-text-inverted">';
                     if (is_object($argument)) {
-                        $arguments .= '<em>' . self::getObjectSnippetPlaintext($argument) . '</em>';
+                        // TODO: Disable until https://github.com/neos/flow-development-collection/pull/3233 is merged
+                        //$arguments .= '<em>' . self::getObjectSnippetPlaintext($argument) . '</em>';
+                        $arguments .= '<em>' . get_class($argument) . '</em>';
                     } elseif (is_string($argument)) {
                         $preparedArgument = (strlen($argument) < 100) ? $argument : substr($argument, 0, 50) . '…' . substr($argument, -50);
                         $preparedArgument = htmlspecialchars($preparedArgument);
@@ -385,13 +388,14 @@ class Debugger
         $backtraceCode = '';
         foreach ($trace as $index => $step) {
             $class = isset($step['class']) ? $step['class'] . '::' : '';
-
             $arguments = '';
             if (isset($step['args']) && is_array($step['args'])) {
                 foreach ($step['args'] as $argument) {
                     $arguments .= (strlen($arguments) === 0) ? '' : ', ';
                     if (is_object($argument)) {
-                        $arguments .= self::getObjectSnippetPlaintext($argument);
+                        // TODO: Disable until https://github.com/neos/flow-development-collection/pull/3233 is merged
+                        //$arguments .= self::getObjectSnippetPlaintext($argument);
+                        $arguments .= get_class($argument);
                     } elseif (is_string($argument)) {
                         $preparedArgument = (strlen($argument) < 100) ? $argument : substr($argument, 0, 50) . '…' . substr($argument, -50);
                         $arguments .= '"' . $preparedArgument . '"';
